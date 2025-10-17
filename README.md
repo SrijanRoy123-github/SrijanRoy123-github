@@ -1,4 +1,4 @@
-# Hi, I'm Srijan Roy 👋
+# Hi, I'm Srijan 👋
 
 B.Tech in Electronics & Telecommunication Engineering @ **Jadavpur University**.  
 I build production-ready **full-stack systems** and do **applied AI/ML research** (computer vision, NLP).  
