@@ -13,23 +13,11 @@
 - Formal methods & mathematical AI
 
 
-## Research Landscape
 
-```mermaid
-quadrantChart
-    title Research Interest Coordinate Map
-    x-axis Algorithmic Research --> Systems / Infrastructure
-    y-axis Fundamental Research --> Applied Research
-    quadrant-1 Applied AI Systems
-    quadrant-2 Applied Algorithmic Research
-    quadrant-4 AI Infrastructure
-    Sequence Models: [0.38, 0.83]
-    Computer Vision: [0.47, 0.63]
-    Scientific ML: [0.52, 0.72]
-    Multimodal AI: [0.65, 0.74]
-    LLM Systems: [0.80, 0.79]
-    ML Compilers: [0.88, 0.48]
-    Distributed ML: [0.92, 0.63]
+
+### Research Domains
+
+`LLM Systems` · `Sequence Models` · `AI Infrastructure` · `Multimodal AI` · `Computer Vision` · `Scientific ML` · `ML Compilers` · `Formal Methods`
 
 ## Open-Source Contributions
 
