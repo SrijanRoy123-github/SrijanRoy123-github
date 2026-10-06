@@ -39,7 +39,10 @@ Only repositories in which I have a **merged pull request to an upstream reposit
 
 <!-- CONTRIBUTED_REPOS:START -->
 
-**External repositories with merged contributions: updating automatically**
+**External repositories with merged contributions: 2**
+
+- [`google-deepmind/formal-conjectures`](https://github.com/google-deepmind/formal-conjectures)
+- [`jax-ml/jax`](https://github.com/jax-ml/jax)
 
 <!-- CONTRIBUTED_REPOS:END -->
 
