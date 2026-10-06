@@ -1,0 +1,102 @@
+name: Update merged contribution repositories
+
+on:
+  schedule:
+    - cron: "17 */6 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update-contributions:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout profile repository
+        uses: actions/checkout@v4
+
+      - name: Find external repositories with merged PRs
+        uses: actions/github-script@v7
+        env:
+          USERNAME: SrijanRoy123-github
+        with:
+          script: |
+            const fs = require("fs");
+            const username = process.env.USERNAME;
+            const repositories = new Set();
+
+            for (let page = 1; page <= 10; page++) {
+              const response = await github.rest.search.issuesAndPullRequests({
+                q: `is:pr is:merged author:${username}`,
+                per_page: 100,
+                page
+              });
+
+              const items = response.data.items;
+              if (items.length === 0) break;
+
+              for (const item of items) {
+                const match = item.repository_url.match(/\/repos\/([^/]+)\/([^/]+)$/);
+                if (!match) continue;
+
+                const owner = match[1];
+                const repository = match[2];
+
+                if (owner.toLowerCase() === username.toLowerCase()) continue;
+
+                repositories.add(`${owner}/${repository}`);
+              }
+
+              if (items.length < 100) break;
+            }
+
+            const sortedRepositories = [...repositories].sort((a, b) =>
+              a.localeCompare(b, undefined, { sensitivity: "base" })
+            );
+
+            const repositoryLines = sortedRepositories.map(
+              repo => `- [\`${repo}\`](https://github.com/${repo})`
+            );
+
+            const generatedSection = [
+              "<!-- CONTRIBUTED_REPOS:START -->",
+              "",
+              `**External repositories with merged contributions: ${sortedRepositories.length}**`,
+              "",
+              ...repositoryLines,
+              "",
+              "<!-- CONTRIBUTED_REPOS:END -->"
+            ].join("\n");
+
+            const readmePath = "README.md";
+            const readme = fs.readFileSync(readmePath, "utf8");
+
+            if (
+              !readme.includes("<!-- CONTRIBUTED_REPOS:START -->") ||
+              !readme.includes("<!-- CONTRIBUTED_REPOS:END -->")
+            ) {
+              core.setFailed("Contribution markers were not found in README.md.");
+              return;
+            }
+
+            const updatedReadme = readme.replace(
+              /<!-- CONTRIBUTED_REPOS:START -->[\s\S]*?<!-- CONTRIBUTED_REPOS:END -->/,
+              generatedSection
+            );
+
+            fs.writeFileSync(readmePath, updatedReadme);
+
+      - name: Commit README changes
+        shell: bash
+        run: |
+          if git diff --quiet README.md; then
+            echo "README is already up to date."
+            exit 0
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add README.md
+          git commit -m "chore: update merged contribution repositories"
+          git push
