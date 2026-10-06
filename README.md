@@ -35,7 +35,7 @@ quadrantChart
 
 ## Open-Source Contributions
 
-Only repositories in which I have a **merged pull request to an upstream repository that I do not own** are listed below.
+
 
 <!-- CONTRIBUTED_REPOS:START -->
 
